@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package llm;
+
+option go_package = "./;llm";
+
+
+service LLMService {
+  // Server-side streaming RPC
+  rpc GenerateStream(GenerateRequest) returns (stream TokenChunk);
+  rpc StopServer(StopRequest) returns (StopResponse);
+}
+
+// 请求消息
+message GenerateRequest {
+  string prompt = 1;
+  int32 max_tokens = 2;
+}
+
+// 流式返回的 token
+message TokenChunk {
+  string token = 1;
+}
+
+message StopRequest {
+  string reason = 1;   // 可选
+}
+
+message StopResponse {
+  string message = 1;
+}
